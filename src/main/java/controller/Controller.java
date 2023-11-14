@@ -15,8 +15,10 @@ import javax.servlet.http.HttpSession;
 import conexion.Conexion;
 import dao.DAOCategoria;
 import dao.DAOProducto;
+import dao.DAOPunto;
 import model.Categoria;
 import model.Producto;
+import model.Punto;
 
 
 /**
@@ -82,12 +84,31 @@ public class Controller extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			request.setAttribute("productos", productos);
-			request.setAttribute("nombrecategoria", nombrecategoria);
+			session.setAttribute("productos", productos); //session par aque cuando pulsemos las estrellas vuelva al la misma página (al principio) 
+			session.setAttribute("nombrecategoria", nombrecategoria);
 			//DOS OPCIONES:
 			// session.setAttribute("Key", objeto);
 			// request.setAttribute("Key", objeto);
 			request.getRequestDispatcher("home.jsp").forward(request, response);
+			break;
+		}
+		case "rating":
+		{
+			String puntos = request.getParameter("rating");
+			String productoid = request.getParameter("productoid");
+			
+			//para poder hacer esta linea antes tenemos que hacer un DAOPunto con el metodo que necesite, en este caso insertar
+			Punto punto = new Punto(100, Integer.parseInt(productoid), Integer.parseInt(puntos));
+			try {
+				new dao.DAOPunto().insertaPunto(punto, con);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			String msg = "Anotados " + puntos + " puntos a " + productoid;
+			request.setAttribute("msg", msg);
+			request.getRequestDispatcher("home.jsp").forward(request, response);
+			
 			break;
 		}
 		default:

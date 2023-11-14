@@ -15,7 +15,7 @@ public class DAOProducto {
 
 		Statement st;
 		st = con.createStatement();
-		String ordenSql = "SELECT * from producto where categoriaid=" + idcategoria;
+		String ordenSql = "SELECT * from producto where categoriaid=" + idcategoria;//para sacar todos los atributos ponemos asterisco
 		rs = st.executeQuery(ordenSql);
 
 		while (rs.next()) { //con esto vamos accediendo a cada una de las filas
@@ -23,6 +23,10 @@ public class DAOProducto {
 			producto.setId(rs.getInt("id"));
 			producto.setTitulo(rs.getString("titulo"));
 			producto.setImagen(rs.getString("imagen"));
+			producto.setBody(rs.getString("body"));
+			producto.setSumario(rs.getString("sumario"));
+			producto.setFondo(rs.getString("fondo"));
+			producto.setCategoriaid(rs.getInt("categoriaid"));
 			lista.add(producto); //lo añadimos al arraylist
 		}
 		rs.close();
